@@ -115,4 +115,5 @@ that runs HylaFAX, so it's only distributed for Linux.
 - The software itself: Across Report's own license (separate)
 - HylaFAX: Copyright (c) 1990-1996 Sam Leffler, Copyright (c) 1991-1996
   Silicon Graphics, Inc. (a permissive MIT/BSD-style license; bundled
-  unmodified — see `COPYRIGHT` for the terms)
+  used unmodified — see `HylaFAX-COPYRIGHT.txt` in
+  [Releases](../../releases/tag/acr-fax-v0.1.0) for the terms)

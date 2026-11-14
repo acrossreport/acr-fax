@@ -100,4 +100,5 @@ Linuxのみの配布。
 
 - 本体ソフトウェア一式: Across Report独自ライセンス(別途)
 - HylaFAX: Copyright (c) 1990-1996 Sam Leffler, Copyright (c) 1991-1996 Silicon Graphics, Inc.
-  (MIT/BSD系の緩い許諾ライセンス。無改造で同梱、条件は `COPYRIGHT` を参照)
+  (MIT/BSD系の緩い許諾ライセンス。無改造で使用。条件は[Releases](../../releases/tag/acr-fax-v0.1.0)に
+  同梱の`HylaFAX-COPYRIGHT.txt`を参照)
