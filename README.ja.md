@@ -75,6 +75,20 @@ AGPtek External USB2.0 FAX MODEM(ファックスモデム、アナログ、デ�
 > サーバー側の実行ファイル一式はまだ同梱していないため、正式リリースはサーバーとクライアントが
 > 揃ったバージョンの組として改めて出す。
 
+## 配布バイナリ
+
+[Releases](../../releases/tag/acr-fax-client-v0.1.0)で配布しているクライアントアプリ(v0.1.0)は、
+OS/CPUアーキテクチャごとの6種類。いずれもランタイム同梱の自己完結型で、解凍してそのまま実行できる。
+
+| ファイル名 | OS | CPUアーキテクチャ | 形式 |
+|---|---|---|---|
+| acr-fax-client-windows-x64.zip | Windows | x64 | zip |
+| acr-fax-client-windows-arm64.zip | Windows | ARM64 | zip |
+| acr-fax-client-macos-x64.tar.gz | macOS | x64(Intel) | tar.gz |
+| acr-fax-client-macos-arm64.tar.gz | macOS | ARM64(Apple Silicon) | tar.gz |
+| acr-fax-client-linux-x64.tar.gz | Linux | x64 | tar.gz |
+| acr-fax-client-linux-arm64.tar.gz | Linux | ARM64 | tar.gz |
+
 ## ライセンス
 
 - 本体ソフトウェア一式: Across Report独自ライセンス(別途)

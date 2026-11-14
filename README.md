@@ -83,6 +83,21 @@ and the AGPtek External USB2.0 FAX MODEM (analog, dual-port).
 > executables aren't bundled yet, so the formal release will ship once server
 > and client versions are matched as a set.
 
+## Distributed binaries
+
+The client app ([Releases](../../releases/tag/acr-fax-client-v0.1.0), v0.1.0)
+ships as six archives, one per OS/CPU architecture. Each is self-contained
+with the runtime bundled in — just unpack and run.
+
+| File | OS | CPU architecture | Format |
+|---|---|---|---|
+| acr-fax-client-windows-x64.zip | Windows | x64 | zip |
+| acr-fax-client-windows-arm64.zip | Windows | ARM64 | zip |
+| acr-fax-client-macos-x64.tar.gz | macOS | x64 (Intel) | tar.gz |
+| acr-fax-client-macos-arm64.tar.gz | macOS | ARM64 (Apple Silicon) | tar.gz |
+| acr-fax-client-linux-x64.tar.gz | Linux | x64 | tar.gz |
+| acr-fax-client-linux-arm64.tar.gz | Linux | ARM64 | tar.gz |
+
 ## License
 
 - The software itself: Across Report's own license (separate)
