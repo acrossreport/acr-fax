@@ -15,7 +15,9 @@ It also lets you send HylaFAX's usual targets — screen captures, Office files
   from unmodified upstream source, to keep compatibility and make future
   upgrades easy to pull in.
 - **Verified modems:** currently verified with USB-connected Class 1 / 1.0 / 2
-  fax modems. Verification with PCI/PCIe multi-port serial boards is planned.
+  fax modems — specifically [Planex](https://www.planex.co.jp/product/accessories_modem.html)
+  and the AGPtek External USB2.0 FAX MODEM (analog, dual-port). Verification
+  with PCI/PCIe multi-port serial boards is planned.
 - **A dedicated setup tool with automatic modem detection.** At install time
   and whenever a modem is swapped, a dedicated GUI tool scans connected
   modems and applies the required configuration (see "Modem setup" below).
