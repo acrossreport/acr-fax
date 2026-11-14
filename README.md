@@ -1,54 +1,48 @@
 # ACR FAX
 
-[acr_fax_server](https://github.com/acrossreport/acr-fax-server-src) と
-[acr_fax_client](https://github.com/acrossreport/acr-fax-client-src) を、対応する
-HylaFAX ビルド済みバイナリと合わせて配布するためのリポジトリです。
-
-このリポジトリ自体にはソースコードは置かず、[Releases](../../releases) に
-プラットフォームごとのバイナリ一式をまとめます。
+ACRの帳票・画面キャプチャ・Officeファイルなどを、社内のFAXサーバー経由で送受信するための
+一式を配布するリポジトリです。このリポジトリ自体にはソースコードは置かず、
+[Releases](../../releases) にOS/アーキテクチャごとのバイナリをまとめます。
 
 ## 特長
 
 - **実績あるHylaFAXをそのまま活用。** 自前でFAXプロトコルを実装するのではなく、
-  長年使われてきたHylaFAXをFAXサーバーの土台にしているため、特定機種に限定されない
-  Class 1 / 1.0 / 2 対応の汎用USB FAXモデムで動作する。
-- **クライアントはHylaFAX自身が持つ`hfaxd`プロトコルを直接話す。** 接続部分は
-  [acr_fax_server](https://github.com/acrossreport/acr-fax-server-src)としてRustでゼロから実装しており、
-  `sendfax`などの外部コマンドをラップするのではなく、プロトコルレベルで接続するため軽量・高速。
-  Windows/macOS/Linuxそれぞれ単一バイナリとして配布できる。
-- **HylaFAX本体には一切手を加えていない。** ソースを改変せずビルドしたバイナリをそのまま使っており、
-  動作の互換性・将来のHylaFAXアップデートの取り込みやすさを保っている。
-- **モデムのダイヤル設定やHylaFAXのユーザー管理も、クライアントのUIからSSH経由でリモート変更可能。**
-  サーバー機の前に行かなくても設定を直せる。
-- **クライアント(acr_fax_client)は自己完結型バイナリ。** .NETランタイムの個別インストールが不要で、
+  長年使われてきたHylaFAXをFAXサーバーの土台にしている。HylaFAX本体には一切手を加えておらず、
+  ソースを改変せずビルドしたバイナリをそのまま使用する(互換性・将来のアップデート取り込みやすさを優先)。
+- **検証済みのモデム:** 現状はUSB接続のFAXモデム(Class 1 / 1.0 / 2)で動作検証済み。
+  PCI/PCIe接続のマルチポートシリアルボードでの検証は今後追加していく予定。
+- **専用の環境設定ツールがあり、モデムの自動認識に対応。** 導入時・モデム交換時に、
+  接続されているモデムを自動スキャンして必要な設定を行う専用ツールを用意している
+  (詳細は後述「モデムの設定」)。
+- **サーバー接続は専用クライアントがプロトコルレベルで直接行う。** 外部コマンドをラップするのではなく
+  軽量・高速に動作し、Windows/macOS/Linuxそれぞれ単一の実行ファイルとして配布できる。
+- **モデムのダイヤル設定やユーザー管理も、クライアントの画面からリモートで変更可能。**
+  サーバー機の前まで行かなくても設定を直せる。
+- **クライアントアプリは自己完結型。** ランタイムの個別インストールが不要で、
   配布された実行ファイルをそのまま起動できる。
 
 ## 全体像
 
 ```mermaid
 flowchart TB
-    ACR["ACRエンジン<br/>(帳票・画面をPDF化して自動送信)"]
+    ACR["ACRエンジン<br/>(帳票・画面を自動でFAX送信)"]
+
+    subgraph Cli["クライアント(複数台、Windows / macOS / Linux)"]
+        direction LR
+        C1["クライアント #1"]
+        C2["クライアント #2"]
+        C3["クライアント #N"]
+    end
 
     subgraph Srv["Ubuntu サーバー(1台)"]
-        HF["HylaFAX (hfaxd)<br/>+ acr_fax_server"]
+        HF["HylaFAX"]
     end
 
     PSTN[("電話回線 / 相手先FAX機")]
 
-    subgraph Cli["クライアント(複数台、Windows / macOS / Linux)"]
-        C1["AcrFaxClient #1"]
-        C2["AcrFaxClient #2"]
-        C3["AcrFaxClient #N"]
-    end
-
-    ACR -- "自動でFAX送信ジョブ投入" --> C1
-    C1 -- "送信ジョブ" --> HF
-    C2 -- "送信ジョブ" --> HF
-    C3 -- "送信ジョブ" --> HF
-    HF <--> PSTN
-    HF -- "受信FAX・送信履歴を共有" --> C1
-    HF -- "受信FAX・送信履歴を共有" --> C2
-    HF -- "受信FAX・送信履歴を共有" --> C3
+    ACR -- "自動でFAX送信ジョブ投入" --> Cli
+    Cli -- "送信ジョブ / 受信FAX・送信履歴を共有" --> Srv
+    Srv <--> PSTN
 ```
 
 - **サーバーは1台**（Ubuntu上でHylaFAXを動かす）。FAXモデム/回線はここに接続する。
@@ -58,24 +52,27 @@ flowchart TB
 - クライアントは手動操作のほか、**ACRエンジンによる自動送信**にも対応する
   （帳票データからPDFを自動生成し、人手を介さずFAX送信するルート）。
 
-## 含まれるもの
+## 動作環境
 
-| コンポーネント | 対応OS/アーキテクチャ | 役割 |
-|---|---|---|
-| HylaFAX 7.0.11 (ビルド済み) | Ubuntu 24.04 (x64) | FAXサーバー本体。モデム/回線はここに接続 |
-| acr_fax_server | Windows / macOS / Linux (x64, ARM64) | クライアント側からHylaFAXへ接続する薄いクライアント |
-| acr_fax_client | Windows / macOS / Linux (x64, ARM64) | 実際に使うデスクトップアプリ本体 |
+- **サーバー: Ubuntu Desktop 24.04 LTSを推奨。** FAXモデム/回線に対応したシリアル・USBポートが
+  必要なため、物理マシンまたはそれに準ずる環境での運用を基本とする。
+- **Windows機しかない場合は、WSL2上のUbuntu 24.04でも動作する。** その場合、Windows側の
+  物理メモリは最低16GB以上を推奨する。
+- クライアントはWindows / macOS / Linux(x64, ARM64)に対応。
 
-acr_fax_client は内部で acr_fax_server を呼び出すため、**両方を同じバージョンの組として配布**します
-(片方だけ古いバイナリを使うと、機能不整合が起きます)。
+## モデムの設定
 
-> **現在の状況:** [acr_fax_client v0.1.0](../../releases/tag/acr-fax-client-v0.1.0) をテスト用に先行公開済み。
-> acr_fax_server のビルド済みバイナリはまだ同梱していないため、正式リリースは server と揃った
-> バージョンの組として改めて出します。
+モデムの検出・udevルールの自動生成・AT通信テスト・HylaFAXサービスの再起動までを
+GUIから一括で行う、Ubuntu専用の環境設定ツールを別途配布している。導入時だけでなく、
+運用開始後にモデムを交換・増設した際も、このツールで接続中の全回線を自動再スキャンできる。
+
+> **現在の状況:** クライアントアプリ v0.1.0 をテスト用に先行公開済み([Releases](../../releases/tag/acr-fax-client-v0.1.0))。
+> サーバー側の実行ファイル一式はまだ同梱していないため、正式リリースはサーバーとクライアントが
+> 揃ったバージョンの組として改めて出す。
 
 ## ライセンス
 
-- acr_fax_server / acr_fax_client: Across Report独自ライセンス(別途)
+- 本体ソフトウェア一式: Across Report独自ライセンス(別途)
 - HylaFAX: Copyright (c) 1990-1996 Sam Leffler, Copyright (c) 1991-1996 Silicon Graphics, Inc.
   同梱の `COPYRIGHT` を参照。
 
