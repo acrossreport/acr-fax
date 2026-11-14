@@ -68,12 +68,17 @@ flowchart TB
   WSL2 has been confirmed to work.** In that case, the Windows host should
   have at least 16GB of RAM. Testing on bare-metal Ubuntu (not WSL2) is still
   to be done.
-- ARM64 hardware testing hasn't happened yet (the only realistic candidate on
-  hand is something like an NVIDIA DGX Spark). The current
-  `acr-fax-server-linux-aarch64.tar.gz` is cross-compiled only; real-hardware
-  verification is still outstanding.
-- Clients support Windows / macOS / Linux (x64, ARM64) — these are cross-built
-  only so far, with real-hardware testing still to come.
+- **ARM64 hardware testing has been completed.** HylaFAX was installed on
+  Ubuntu 24.04 (aarch64) running under WSL2 on a Windows ARM machine
+  (Snapdragon X), and USB modem detection, registration, and actual send/receive
+  over a real phone line were all confirmed working. On the same machine, the
+  Windows ARM64-native client was also confirmed to send/receive, and the modem
+  setup tool (run under WSL2) was confirmed to detect the modem and run AT
+  command tests. Testing on bare-metal Linux ARM64 (outside WSL) is still
+  outstanding.
+- Clients support Windows / macOS / Linux (x64, ARM64). Windows ARM64 has been
+  verified on real hardware (above); macOS / Linux ARM64 are cross-built only
+  so far, with real-hardware testing still to come.
 
 ## Modem setup
 

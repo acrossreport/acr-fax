@@ -60,9 +60,13 @@ flowchart TB
   必要なため、物理マシンまたはそれに準ずる環境での運用を基本とする。
 - **Windows機しかない場合、WSL2上のUbuntu 24.04で動作することは確認済み。** その場合、Windows側の
   物理メモリは最低16GB以上を推奨する。単体のUbuntu(ベアメタル)での動作検証はこれから行う。
-- ARM64実機での検証はまだ行えていない(手元にある候補はNVIDIA DGX Spark程度)。現状の
-  `acr-fax-server-linux-aarch64.tar.gz`はクロスビルドのみで、実機検証は今後の課題。
-- クライアントはWindows / macOS / Linux(x64, ARM64)に対応(いずれもビルドのみで実機検証はこれから)。
+- **ARM64実機での検証を実施済み。** Windows ARM機(Snapdragon X)上のWSL2 Ubuntu 24.04(aarch64)に
+  HylaFAXをインストールし、USBモデムの検出・登録・実際の電話回線経由での送受信まで成功を確認した。
+  同じ機体上でクライアント(Windows ARM64ネイティブビルド)からの送受信、およびモデム設定ツール
+  (WSL2上で実行)によるモデム検出・AT通信テストの動作も確認済み。ベアメタルのLinux ARM64
+  (WSLを介さない環境)での検証は今後の課題。
+- クライアントはWindows / macOS / Linux(x64, ARM64)に対応。Windows ARM64は実機検証済み(上記)、
+  macOS / Linux ARM64はビルドのみで実機検証はこれから。
 
 ## モデムの設定
 
