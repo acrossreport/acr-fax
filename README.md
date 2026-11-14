@@ -64,9 +64,16 @@ flowchart TB
 - **Server: Ubuntu Desktop 24.04 LTS is recommended.** A physical machine (or
   equivalent) is the baseline, since a serial/USB port for the fax modem/line
   is required.
-- **If only a Windows machine is available, it also works under Ubuntu 24.04
-  on WSL2.** In that case, the Windows host should have at least 16GB of RAM.
-- Clients support Windows / macOS / Linux (x64, ARM64).
+- **If only a Windows machine is available, running under Ubuntu 24.04 on
+  WSL2 has been confirmed to work.** In that case, the Windows host should
+  have at least 16GB of RAM. Testing on bare-metal Ubuntu (not WSL2) is still
+  to be done.
+- ARM64 hardware testing hasn't happened yet (the only realistic candidate on
+  hand is something like an NVIDIA DGX Spark). The current
+  `acr-fax-server-linux-aarch64.tar.gz` is cross-compiled only; real-hardware
+  verification is still outstanding.
+- Clients support Windows / macOS / Linux (x64, ARM64) — these are cross-built
+  only so far, with real-hardware testing still to come.
 
 ## Modem setup
 

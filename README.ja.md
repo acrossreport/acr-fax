@@ -58,9 +58,11 @@ flowchart TB
 
 - **サーバー: Ubuntu Desktop 24.04 LTSを推奨。** FAXモデム/回線に対応したシリアル・USBポートが
   必要なため、物理マシンまたはそれに準ずる環境での運用を基本とする。
-- **Windows機しかない場合は、WSL2上のUbuntu 24.04でも動作する。** その場合、Windows側の
-  物理メモリは最低16GB以上を推奨する。
-- クライアントはWindows / macOS / Linux(x64, ARM64)に対応。
+- **Windows機しかない場合、WSL2上のUbuntu 24.04で動作することは確認済み。** その場合、Windows側の
+  物理メモリは最低16GB以上を推奨する。単体のUbuntu(ベアメタル)での動作検証はこれから行う。
+- ARM64実機での検証はまだ行えていない(手元にある候補はNVIDIA DGX Spark程度)。現状の
+  `acr-fax-server-linux-aarch64.tar.gz`はクロスビルドのみで、実機検証は今後の課題。
+- クライアントはWindows / macOS / Linux(x64, ARM64)に対応(いずれもビルドのみで実機検証はこれから)。
 
 ## モデムの設定
 
