@@ -68,6 +68,9 @@ flowchart TB
 GUIから一括で行う、Ubuntu専用の環境設定ツールを別途配布している。導入時だけでなく、
 運用開始後にモデムを交換・増設した際も、このツールで接続中の全回線を自動再スキャンできる。
 
+検証済みのモデムは[プラネックス](https://www.planex.co.jp/product/accessories_modem.html)、
+AGPtek External USB2.0 FAX MODEM(ファックスモデム、アナログ、デュアルポート)。
+
 > **現在の状況:** クライアントアプリ v0.1.0 をテスト用に先行公開済み([Releases](../../releases/tag/acr-fax-client-v0.1.0))。
 > サーバー側の実行ファイル一式はまだ同梱していないため、正式リリースはサーバーとクライアントが
 > 揃ったバージョンの組として改めて出す。

@@ -75,6 +75,9 @@ command testing, and restarting the HylaFAX service, all in one place. Beyond
 initial setup, it can also re-scan every connected line whenever a modem is
 swapped or added later during operation.
 
+Verified modems: [Planex](https://www.planex.co.jp/product/accessories_modem.html)
+and the AGPtek External USB2.0 FAX MODEM (analog, dual-port).
+
 > **Current status:** the client app v0.1.0 has been published early for
 > testing ([Releases](../../releases/tag/acr-fax-client-v0.1.0)). Server-side
 > executables aren't bundled yet, so the formal release will ship once server
