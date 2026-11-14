@@ -28,21 +28,18 @@ ACR FAXは、帳票エンジンであるACRの機能をHylaFAXと組み合わせ
 ```mermaid
 flowchart TB
     ACR["ACRエンジン<br/>(帳票・画面を自動でFAX送信)"]
-
-    subgraph Cli["クライアント(複数台、Windows / macOS / Linux)"]
-        direction LR
-        C1["クライアント #1"]
-        C2["クライアント #2"]
-        C3["クライアント #N"]
-    end
-
+    C1["クライアント #1<br/>(Windows / macOS / Linux)"]
+    C2["クライアント #2<br/>(Windows / macOS / Linux)"]
+    C3["クライアント #N<br/>(Windows / macOS / Linux)"]
     HF["HylaFAX<br/>(Ubuntu サーバー、1台)"]
     PSTN[("電話回線 / 相手先FAX機")]
 
     ACR --> C1
     ACR -- "自動でFAX送信ジョブ投入" --> C2
     ACR --> C3
+    C1 --> HF
     C2 -- "送信ジョブ / 受信FAX・送信履歴を共有" --> HF
+    C3 --> HF
     HF <--> PSTN
 ```
 
