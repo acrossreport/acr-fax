@@ -78,25 +78,30 @@ swapped or added later during operation.
 Verified modems: [Planex](https://www.planex.co.jp/product/accessories_modem.html)
 and the AGPtek External USB2.0 FAX MODEM (analog, dual-port).
 
-> **Current status:** the client app v0.1.0 has been published early for
-> testing ([Releases](../../releases/tag/acr-fax-client-v0.1.0)). Server-side
-> executables aren't bundled yet, so the formal release will ship once server
-> and client versions are matched as a set.
+> **Current status:** [v0.1.0](../../releases/tag/acr-fax-v0.1.0) has been
+> published early for testing, with the client and server shipped together
+> as a matched set.
 
 ## Distributed binaries
 
-The client app ([Releases](../../releases/tag/acr-fax-client-v0.1.0), v0.1.0)
-ships as six archives, one per OS/CPU architecture. Each is self-contained
-with the runtime bundled in — just unpack and run.
+[Releases](../../releases/tag/acr-fax-v0.1.0) (v0.1.0) ships eight files:
+six client archives (one per OS/CPU architecture) and two server archives
+(Linux x86_64/aarch64). Each is self-contained with the runtime bundled in —
+just unpack and run.
 
-| File | OS | CPU architecture | Format |
-|---|---|---|---|
-| acr-fax-client-windows-x64.zip | Windows | x64 | zip |
-| acr-fax-client-windows-arm64.zip | Windows | ARM64 | zip |
-| acr-fax-client-macos-x64.tar.gz | macOS | x64 (Intel) | tar.gz |
-| acr-fax-client-macos-arm64.tar.gz | macOS | ARM64 (Apple Silicon) | tar.gz |
-| acr-fax-client-linux-x64.tar.gz | Linux | x64 | tar.gz |
-| acr-fax-client-linux-arm64.tar.gz | Linux | ARM64 | tar.gz |
+| File | Role | OS | CPU architecture | Format |
+|---|---|---|---|---|
+| acr-fax-client-windows-x64.zip | Client | Windows | x64 | zip |
+| acr-fax-client-windows-arm64.zip | Client | Windows | ARM64 | zip |
+| acr-fax-client-macos-x64.tar.gz | Client | macOS | x64 (Intel) | tar.gz |
+| acr-fax-client-macos-arm64.tar.gz | Client | macOS | ARM64 (Apple Silicon) | tar.gz |
+| acr-fax-client-linux-x64.tar.gz | Client | Linux | x64 | tar.gz |
+| acr-fax-client-linux-arm64.tar.gz | Client | Linux | ARM64 | tar.gz |
+| acr-fax-server-linux-x86_64.tar.gz | Server | Linux | x64 | tar.gz |
+| acr-fax-server-linux-aarch64.tar.gz | Server | Linux | ARM64 | tar.gz |
+
+The server (`acr_fax_server`) is meant to run directly on the Ubuntu machine
+that runs HylaFAX, so it's only distributed for Linux.
 
 ## License
 

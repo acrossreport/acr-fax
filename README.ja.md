@@ -71,23 +71,28 @@ GUIから一括で行う、Ubuntu専用の環境設定ツールを別途配布�
 検証済みのモデムは[プラネックス](https://www.planex.co.jp/product/accessories_modem.html)、
 AGPtek External USB2.0 FAX MODEM(ファックスモデム、アナログ、デュアルポート)。
 
-> **現在の状況:** クライアントアプリ v0.1.0 をテスト用に先行公開済み([Releases](../../releases/tag/acr-fax-client-v0.1.0))。
-> サーバー側の実行ファイル一式はまだ同梱していないため、正式リリースはサーバーとクライアントが
-> 揃ったバージョンの組として改めて出す。
+> **現在の状況:** [v0.1.0](../../releases/tag/acr-fax-v0.1.0)をテスト用に先行公開済み。
+> クライアント・サーバーを揃ったバージョンの組として配布している。
 
 ## 配布バイナリ
 
-[Releases](../../releases/tag/acr-fax-client-v0.1.0)で配布しているクライアントアプリ(v0.1.0)は、
-OS/CPUアーキテクチャごとの6種類。いずれもランタイム同梱の自己完結型で、解凍してそのまま実行できる。
+[Releases](../../releases/tag/acr-fax-v0.1.0)(v0.1.0)で配布しているのは、クライアント6種
+(OS/CPUアーキテクチャごと)とサーバー2種(Linux x86_64/aarch64)の計8ファイル。
+いずれもランタイム同梱の自己完結型で、解凍してそのまま実行できる。
 
-| ファイル名 | OS | CPUアーキテクチャ | 形式 |
-|---|---|---|---|
-| acr-fax-client-windows-x64.zip | Windows | x64 | zip |
-| acr-fax-client-windows-arm64.zip | Windows | ARM64 | zip |
-| acr-fax-client-macos-x64.tar.gz | macOS | x64(Intel) | tar.gz |
-| acr-fax-client-macos-arm64.tar.gz | macOS | ARM64(Apple Silicon) | tar.gz |
-| acr-fax-client-linux-x64.tar.gz | Linux | x64 | tar.gz |
-| acr-fax-client-linux-arm64.tar.gz | Linux | ARM64 | tar.gz |
+| ファイル名 | 役割 | OS | CPUアーキテクチャ | 形式 |
+|---|---|---|---|---|
+| acr-fax-client-windows-x64.zip | クライアント | Windows | x64 | zip |
+| acr-fax-client-windows-arm64.zip | クライアント | Windows | ARM64 | zip |
+| acr-fax-client-macos-x64.tar.gz | クライアント | macOS | x64(Intel) | tar.gz |
+| acr-fax-client-macos-arm64.tar.gz | クライアント | macOS | ARM64(Apple Silicon) | tar.gz |
+| acr-fax-client-linux-x64.tar.gz | クライアント | Linux | x64 | tar.gz |
+| acr-fax-client-linux-arm64.tar.gz | クライアント | Linux | ARM64 | tar.gz |
+| acr-fax-server-linux-x86_64.tar.gz | サーバー | Linux | x64 | tar.gz |
+| acr-fax-server-linux-aarch64.tar.gz | サーバー | Linux | ARM64 | tar.gz |
+
+サーバー側(`acr_fax_server`)はHylaFAXが稼働するUbuntu機上にそのまま置いて動かす前提のため、
+Linuxのみの配布。
 
 ## ライセンス
 
