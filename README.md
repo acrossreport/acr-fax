@@ -1,75 +1,86 @@
 # ACR FAX
 
-ACR FAXは、帳票エンジンであるACRの機能をHylaFAXと組み合わせることで、外部システム
-（発注業務、作業報告書など）と連動したFAX送信を可能にします。また、HylaFAX本来の
-画面キャプチャ・Excel/WordなどのOfficeファイル・PDFなどの送信も同時に行えるシステムです。
+[日本語](README.ja.md)
 
-## 特長
+ACR FAX combines ACR, a report-rendering engine, with HylaFAX to let external
+systems (ordering workflows, work reports, and the like) trigger fax sends.
+It also lets you send HylaFAX's usual targets — screen captures, Office files
+(Excel/Word), and PDFs — through the same system.
 
-- **実績あるHylaFAXをそのまま活用。** 自前でFAXプロトコルを実装するのではなく、
-  長年使われてきたHylaFAXをFAXサーバーの土台にしている。HylaFAX本体には一切手を加えておらず、
-  ソースを改変せずビルドしたバイナリをそのまま使用します(互換性・将来のアップデート取り込みやすさを優先)。
-- **検証済みのモデム:** 現状はUSB接続のFAXモデム(Class 1 / 1.0 / 2)で動作検証済み。
-  PCI/PCIe接続のマルチポートシリアルボードでの検証は今後追加していく予定です。
-- **専用の環境設定ツールがあり、モデムの自動認識に対応。** 導入時・モデム交換時に、
-  接続されているモデムを自動スキャンして必要な設定を行う専用ツールを用意しています。
-  (詳細は後述「モデムの設定」)。
-- **サーバー接続は専用クライアントがプロトコルレベルで直接行う。** 外部コマンドをラップするのではなく
-  軽量・高速に動作します。
-- **クライアントはAvalonia UIで実装。** 同一コードベースでWindows/macOS/Linuxのx64/ARM64すべてを
-  カバーするマルチベンダー対応を実現いたします。
-- **モデムのダイヤル設定やユーザー管理も、クライアントの画面からリモートで変更可能。**
-  サーバー機の前まで行かなくても設定を修正できます。。
-- **クライアントアプリは自己完結型。** ランタイムの個別インストールが不要で、
-  配布された実行ファイルをそのまま起動します。。
+## Highlights
 
-## 全体像
+- **Builds on HylaFAX as-is.** Rather than reimplementing the fax protocol,
+  this project uses HylaFAX, which has been battle-tested for decades, as the
+  server foundation. HylaFAX itself is never patched; the binaries are built
+  from unmodified upstream source, to keep compatibility and make future
+  upgrades easy to pull in.
+- **Verified modems:** currently verified with USB-connected Class 1 / 1.0 / 2
+  fax modems. Verification with PCI/PCIe multi-port serial boards is planned.
+- **A dedicated setup tool with automatic modem detection.** At install time
+  and whenever a modem is swapped, a dedicated GUI tool scans connected
+  modems and applies the required configuration (see "Modem setup" below).
+- **The client talks to the server at the protocol level**, not by wrapping
+  external commands, for lightweight, fast operation.
+- **The client is built with Avalonia UI.** A single codebase covers
+  Windows/macOS/Linux on both x64 and ARM64.
+- **Dial settings and user management can also be changed remotely** from the
+  client UI over SSH, without going to the server machine.
+- **The client app is self-contained.** No separate runtime install is
+  needed; just run the distributed executable.
+
+## Overview
 
 ```mermaid
 flowchart TB
-    ACR["ACRエンジン<br/>(帳票・画面を自動でFAX送信)"]
-    C1["クライアント #1<br/>(Windows / macOS / Linux)"]
-    C2["クライアント #2<br/>(Windows / macOS / Linux)"]
-    C3["クライアント #N<br/>(Windows / macOS / Linux)"]
-    HF["HylaFAX<br/>(Ubuntu サーバー、1台)"]
-    PSTN[("電話回線 / 相手先FAX機")]
+    ACR["ACR engine<br/>(auto-sends reports/screens as fax)"]
+    C1["Client #1<br/>(Windows / macOS / Linux)"]
+    C2["Client #2<br/>(Windows / macOS / Linux)"]
+    C3["Client #N<br/>(Windows / macOS / Linux)"]
+    HF["HylaFAX<br/>(single Ubuntu server)"]
+    PSTN[("Phone line / remote fax machine")]
 
     ACR --> C1
-    ACR -- "自動でFAX送信ジョブ投入" --> C2
+    ACR -- "auto-submits a send job" --> C2
     ACR --> C3
     C1 --> HF
-    C2 -- "送信ジョブ / 受信FAX・送信履歴を共有" --> HF
+    C2 -- "send jobs / shared received faxes & history" --> HF
     C3 --> HF
     HF <--> PSTN
 ```
 
-- **サーバーは1台**（Ubuntu上でHylaFAXを動かす）。FAXモデム/回線はここに接続する。
-- **クライアントは複数台**がこのサーバーに接続できる。各クライアントから送信操作ができ、
-  受信したFAXや送信履歴は、どのクライアントからでも同じように確認できる（特定の1台だけが
-  持っているわけではない）。
-- クライアントは手動操作のほか、**ACRエンジンによる自動送信**にも対応する
-  （帳票データからPDFを自動生成し、人手を介さずFAX送信するルート）。
+- **There is one server** (running HylaFAX on Ubuntu). The fax modem/line
+  connects here.
+- **Multiple clients** can connect to that single server. Any client can send
+  a fax, and received faxes and send history look the same from every client
+  (no single client "owns" that data).
+- Besides manual sending, clients also support **automatic sending driven by
+  the ACR engine** (auto-generate a PDF from report data and fax it without
+  manual steps).
 
-## 動作環境
+## Requirements
 
-- **サーバー: Ubuntu Desktop 24.04 LTSを推奨。** FAXモデム/回線に対応したシリアル・USBポートが
-  必要なため、物理マシンまたはそれに準ずる環境での運用を基本とする。
-- **Windows機しかない場合は、WSL2上のUbuntu 24.04でも動作する。** その場合、Windows側の
-  物理メモリは最低16GB以上を推奨する。
-- クライアントはWindows / macOS / Linux(x64, ARM64)に対応。
+- **Server: Ubuntu Desktop 24.04 LTS is recommended.** A physical machine (or
+  equivalent) is the baseline, since a serial/USB port for the fax modem/line
+  is required.
+- **If only a Windows machine is available, it also works under Ubuntu 24.04
+  on WSL2.** In that case, the Windows host should have at least 16GB of RAM.
+- Clients support Windows / macOS / Linux (x64, ARM64).
 
-## モデムの設定
+## Modem setup
 
-モデムの検出・udevルールの自動生成・AT通信テスト・HylaFAXサービスの再起動までを
-GUIから一括で行う、Ubuntu専用の環境設定ツールを別途配布している。導入時だけでなく、
-運用開始後にモデムを交換・増設した際も、このツールで接続中の全回線を自動再スキャンできる。
+A dedicated Ubuntu GUI tool handles modem detection, udev rule generation, AT
+command testing, and restarting the HylaFAX service, all in one place. Beyond
+initial setup, it can also re-scan every connected line whenever a modem is
+swapped or added later during operation.
 
-> **現在の状況:** クライアントアプリ v0.1.0 をテスト用に先行公開済み([Releases](../../releases/tag/acr-fax-client-v0.1.0))。
-> サーバー側の実行ファイル一式はまだ同梱していないため、正式リリースはサーバーとクライアントが
-> 揃ったバージョンの組として改めて出す。
+> **Current status:** the client app v0.1.0 has been published early for
+> testing ([Releases](../../releases/tag/acr-fax-client-v0.1.0)). Server-side
+> executables aren't bundled yet, so the formal release will ship once server
+> and client versions are matched as a set.
 
-## ライセンス
+## License
 
-- 本体ソフトウェア一式: Across Report独自ライセンス(別途)
-- HylaFAX: Copyright (c) 1990-1996 Sam Leffler, Copyright (c) 1991-1996 Silicon Graphics, Inc.
-  (MIT/BSD系の緩い許諾ライセンス。無改造で同梱、条件は `COPYRIGHT` を参照)
+- The software itself: Across Report's own license (separate)
+- HylaFAX: Copyright (c) 1990-1996 Sam Leffler, Copyright (c) 1991-1996
+  Silicon Graphics, Inc. (a permissive MIT/BSD-style license; bundled
+  unmodified — see `COPYRIGHT` for the terms)
