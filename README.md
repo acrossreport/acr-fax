@@ -1,6 +1,8 @@
 # ACR FAX
 
-ACRの帳票・画面キャプチャ・Officeファイルなどを、社内のFAXサーバー経由で送受信するための一式です。
+ACR FAXは、帳票エンジンであるACRの機能をHylaFAXと組み合わせることで、外部システム
+（発注業務、作業報告書など）と連動したFAX送信を可能にします。また、HylaFAX本来の
+画面キャプチャ・Excel/WordなどのOfficeファイル・PDFなどの送信も同時に行えるシステムです。
 
 ## 特長
 
@@ -34,17 +36,14 @@ flowchart TB
         C3["クライアント #N"]
     end
 
-    subgraph Srv["Ubuntu サーバー(1台)"]
-        HF["HylaFAX"]
-    end
-
+    HF["HylaFAX<br/>(Ubuntu サーバー、1台)"]
     PSTN[("電話回線 / 相手先FAX機")]
 
     ACR --> C1
     ACR -- "自動でFAX送信ジョブ投入" --> C2
     ACR --> C3
-    Cli -- "送信ジョブ / 受信FAX・送信履歴を共有" --> Srv
-    Srv <--> PSTN
+    C2 -- "送信ジョブ / 受信FAX・送信履歴を共有" --> HF
+    HF <--> PSTN
 ```
 
 - **サーバーは1台**（Ubuntu上でHylaFAXを動かす）。FAXモデム/回線はここに接続する。
