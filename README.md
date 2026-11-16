@@ -9,11 +9,13 @@ It also lets you send HylaFAX's usual targets — screen captures, Office files
 
 ## Highlights
 
-- **Builds on HylaFAX as-is.** Rather than reimplementing the fax protocol,
+- **Builds on HylaFAX+ as-is.** Rather than reimplementing the fax protocol,
   this project uses HylaFAX, which has been battle-tested for decades, as the
-  server foundation. HylaFAX itself is never patched; the binaries are built
-  from unmodified upstream source, to keep compatibility and make future
-  upgrades easy to pull in.
+  server foundation. The original HylaFAX (by Sam Leffler) is no longer
+  developed, so this project uses **HylaFAX+**, the actively maintained fork
+  (currently v7.0.11). HylaFAX+ itself is never patched; the binaries are
+  built from unmodified upstream source, to keep compatibility and make
+  future upgrades easy to pull in.
 - **Verified modems:** currently verified with USB-connected Class 1 / 1.0 / 2
   fax modems — specifically [Planex](https://www.planex.co.jp/product/accessories_modem.html)
   and the AGPtek External USB2.0 FAX MODEM (analog, dual-port). Verification
@@ -79,6 +81,14 @@ flowchart TB
 - Clients support Windows / macOS / Linux (x64, ARM64). Windows ARM64 has been
   verified on real hardware (above); macOS / Linux ARM64 are cross-built only
   so far, with real-hardware testing still to come.
+- **Testing over "Hikari Denwa" (IP/VoIP phone) lines has not been done yet.**
+  On VoIP-based lines such as Hikari Denwa, analog-modem fax tends to be more
+  prone to slowdowns and errors than on a plain analog line; disabling ECM and
+  capping the negotiated speed are commonly suggested mitigations. We haven't
+  tested against such a line ourselves, so we can't yet publish concrete
+  recommended settings. If you plan to use this over Hikari Denwa or a similar
+  VoIP line, test send/receive beforehand. We'll add recommended settings here
+  once we've verified them.
 
 ## Modem setup
 
@@ -118,7 +128,7 @@ that runs HylaFAX, so it's only distributed for Linux.
 ## License
 
 - The software itself: Across Report's own license (separate)
-- HylaFAX: Copyright (c) 1990-1996 Sam Leffler, Copyright (c) 1991-1996
-  Silicon Graphics, Inc. (a permissive MIT/BSD-style license; bundled
-  used unmodified — see `HylaFAX-COPYRIGHT.txt` in
+- HylaFAX+ (v7.0.11): Copyright (c) 1990-1996 Sam Leffler, Copyright (c)
+  1991-1996 Silicon Graphics, Inc. (a permissive MIT/BSD-style license; used
+  unmodified — see `HylaFAX-COPYRIGHT.txt` in
   [Releases](../../releases/tag/acr-fax-v0.1.0) for the terms)

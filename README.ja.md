@@ -8,9 +8,11 @@ ACR FAXは、帳票エンジンであるACRの機能をHylaFAXと組み合わせ
 
 ## 特長
 
-- **実績あるHylaFAXをそのまま活用。** 自前でFAXプロトコルを実装するのではなく、
-  長年使われてきたHylaFAXをFAXサーバーの土台にしている。HylaFAX本体には一切手を加えておらず、
-  ソースを改変せずビルドしたバイナリをそのまま使用します(互換性・将来のアップデート取り込みやすさを優先)。
+- **実績あるHylaFAX+をそのまま活用。** 自前でFAXプロトコルを実装するのではなく、
+  長年使われてきたHylaFAXをFAXサーバーの土台にしている。オリジナルのHylaFAX(Sam Leffler氏による開発)は
+  開発が停止しており、現在も保守が続いている派生版の**HylaFAX+**(本プロジェクトではv7.0.11を使用)を
+  採用している。HylaFAX+本体には一切手を加えておらず、ソースを改変せずビルドしたバイナリをそのまま
+  使用します(互換性・将来のアップデート取り込みやすさを優先)。
 - **検証済みのモデム:** 現状はUSB接続のFAXモデム(Class 1 / 1.0 / 2)で動作検証済み。
   具体的には[プラネックス](https://www.planex.co.jp/product/accessories_modem.html)、
   AGPtek External USB2.0 FAX MODEM(ファックスモデム、アナログ、デュアルポート)で検証済み。
@@ -67,6 +69,11 @@ flowchart TB
   (WSLを介さない環境)での検証は今後の課題。
 - クライアントはWindows / macOS / Linux(x64, ARM64)に対応。Windows ARM64は実機検証済み(上記)、
   macOS / Linux ARM64はビルドのみで実機検証はこれから。
+- **ひかり電話(IP電話)環境での検証は未実施。** ひかり電話などVoIP化された回線では、アナログモデムに
+  よるFAX送受信が通常のアナログ回線より速度低下・エラーを起こしやすいことが一般に知られており、
+  ECMの無効化や送受信速度の上限設定が有効とされることがある。現時点では当方の環境でひかり電話を
+  使った検証を行っていないため、具体的な推奨設定は提示できない。ひかり電話環境で利用する場合は、
+  事前に送受信テストを行うことを推奨する(検証が済めば、推奨設定値をここに追記する予定)。
 
 ## モデムの設定
 
@@ -103,6 +110,6 @@ Linuxのみの配布。
 ## ライセンス
 
 - 本体ソフトウェア一式: Across Report独自ライセンス(別途)
-- HylaFAX: Copyright (c) 1990-1996 Sam Leffler, Copyright (c) 1991-1996 Silicon Graphics, Inc.
+- HylaFAX+ (v7.0.11): Copyright (c) 1990-1996 Sam Leffler, Copyright (c) 1991-1996 Silicon Graphics, Inc.
   (MIT/BSD系の緩い許諾ライセンス。無改造で使用。条件は[Releases](../../releases/tag/acr-fax-v0.1.0)に
   同梱の`HylaFAX-COPYRIGHT.txt`を参照)
